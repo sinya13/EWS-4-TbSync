@@ -8,7 +8,7 @@
         <em:unpack>false</em:unpack>
         <em:multiprocessCompatible>true</em:multiprocessCompatible>
         <em:name>Provider for Exchange WebServices</em:name>
-        <em:version>0.6</em:version>
+        <em:version>0.4.1</em:version>
         <em:description>Add sync support for Exchange WebServices accounts to TbSync</em:description>
         <em:translator>John Bieling (en-US)</em:translator>
         <em:translator>Alexey Sinitsyn (ru)</em:translator>

@@ -1,18 +1,9 @@
 /*
  * This file is part of EWS-4-TbSync.
  *
- * TbSync is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * TbSync is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with EWS-4-TbSync. If not, see <https://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. 
  */
  
  "use strict";
@@ -95,9 +86,6 @@ ews.sync = {
                         syncdata.targetId = tbSync.db.getFolderSetting(syncdata.account, syncdata.folderID, "target");
                         syncdata.addressbookObj = tbSync.getAddressBookObject(syncdata.targetId);
 
-                        //promisify addressbook, so it can be used together with yield (using same interface as promisified calender)
-                        syncdata.targetObj = tbSync.promisifyAddressbook(syncdata.addressbookObj);
-                        
                         yield ews.sync.singleFolder(syncdata);
                         break;
 
@@ -116,9 +104,6 @@ ews.sync = {
 
                         syncdata.targetId = tbSync.db.getFolderSetting(syncdata.account, syncdata.folderID, "target");
                         syncdata.calendarObj = cal.getCalendarManager().getCalendarById(syncdata.targetId);
-                        
-                        //promisify calender, so it can be used together with yield
-                        syncdata.targetObj = cal.async.promisifyCalendar(syncdata.calendarObj.wrappedJSObject);
 
                         syncdata.calendarObj.startBatch();
                         yield ews.sync.singleFolder(syncdata);
@@ -142,11 +127,6 @@ ews.sync = {
 
     
     singleFolder: Task.async (function* (syncdata)  {
-        //The syncdata.targetObj has a comon interface, regardless if this is a contact or calendar sync, 
-        //so you could use the same main sync process for both to reduce redundancy.
-        //The actual type can be stored in syncdata.type, so you can call type-based functions to read 
-        //or to create new Thunderbird items (contacts or events)
-
         //Pretend to receive remote changes
         {
             tbSync.setSyncState("send.request.remotechanges", syncdata.account, syncdata.folderID);
